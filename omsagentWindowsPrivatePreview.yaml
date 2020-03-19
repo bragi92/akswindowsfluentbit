@@ -14,24 +14,24 @@ spec:
    serviceAccountName: omsagent
    containers:
      - name: omsagent-private-preview-windows 
-       image: bragi92/fluentbit:03172020 #mcr.microsoft.com/azuremonitor/containerinsights/cidev:windowsprivatepreview03132020_2
+       image: bragi92/fluentbit:03182020_1
        imagePullPolicy: Always
        resources:
         limits:
-         cpu: 150m
-         memory: 600Mi
+         cpu: 1300m
+         memory: 500Mi
         requests:
-         cpu: 75m
-         memory: 225Mi
+         cpu: 1100m
+         memory: 300Mi
        env:       
        - name: CI_WSID
-         value: "XXXX"
+         value: "5e0e87ea-67ac-4779-b6f7-30173b69112a"
        - name: CI_SHARED_KEY
-         value: "XXXX"
+         value: "nqWJ0bSZo7g5p4hr4QLFqMB438csAzPb74HMUHb8086Ne6lrkF/vVUyg/jHDGWHACaUJVX6W/6hxX2Gh+2Uhcg=="
        - name: AKS_RESOURCE_ID
-         value: "XXXX"
+         value: "/subscriptions/692aea0b-2d89-4e7e-ae30-fffe40782ee2/resourceGroups/kaveeshINeedRbac/providers/Microsoft.ContainerService/managedClusters/kaveeshINeedRbac"
        - name: AKS_REGION
-         value: "XXXX"
+         value: "westeurope"
        - name: CONTROLLER_TYPE
          value: "DaemonSet"
        - name: CI_DOMAIN
@@ -51,14 +51,18 @@ spec:
        - name: APPLICATIONINSIGHTS_AUTH
          value: "NzAwZGM5OGYtYTdhZC00NThkLWI5NWMtMjA3ZjM3NmM3YmRi"
        volumeMounts:
-        - mountPath: \\.\pipe\docker_engine
-          name: docker-engine-pipe  
         - mountPath: C:\ProgramData\docker\containers
           name: docker-windows-docker-containers
+          readOnly: true
         - mountPath: C:\var
           name: docker-windows-kuberenetes-container-logs
-        - mountPath: C:\host
-          name: docker-windows-host
+          readOnly: true
+       livenessProbe:
+         exec:
+           command:
+             - powershell
+             - -c
+             - C:\omsagentwindows\livenessProbe.ps1
    nodeSelector:
     beta.kubernetes.io/os: windows    
    # Tolerate a NoSchedule taint on master that ACS Engine sets.
@@ -68,17 +72,10 @@ spec:
       value: "true"
       effect: "NoSchedule"
    volumes:
-     - name: docker-engine-pipe 
-       hostPath:
-         path: \\.\pipe\docker_engine
-         type: null
      - name: docker-windows-kuberenetes-container-logs
        hostPath:
          path: C:\var
      - name: docker-windows-docker-containers
        hostPath:
          path: C:\ProgramData\docker\containers
-     - name: docker-windows-host
-       hostPath:
-         path: C:\
      
