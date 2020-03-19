@@ -14,7 +14,7 @@ spec:
    serviceAccountName: omsagent
    containers:
      - name: omsagent-private-preview-windows 
-       image: bragi92/fluentbit:03182020_1
+       image: bragi92/fluentbit:03192020
        imagePullPolicy: Always
        resources:
         limits:
@@ -61,7 +61,7 @@ spec:
          exec:
            command:
              - powershell
-             - -c
+             - -c 
              - C:\omsagentwindows\livenessProbe.ps1
    nodeSelector:
     beta.kubernetes.io/os: windows    
