@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>out\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>out\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
