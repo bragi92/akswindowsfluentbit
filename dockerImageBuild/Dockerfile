@@ -2,10 +2,6 @@
 
 ARG WINDOWS_VERSION=1809
 
-#
-# Builder Image - Windows Server Core
-# Assemble the components required to run Fluent Bit
-#
 FROM mcr.microsoft.com/windows/servercore:$WINDOWS_VERSION as builder
 
 #
@@ -43,6 +39,7 @@ RUN Write-Host ('Installing Visual C++ Redistributable Package'); `
 RUN New-Item -Type Directory -Path /omsagentwindows
 WORKDIR /omsagentwindows
 COPY .\backgroundrunner.ps1 'C:\\omsagentwindows\\'
+COPY .\livenessProbe.ps1 'C:\\omsagentwindows\\'
 COPY .\fluent-bit.conf 'C:\\omsagentwindows\\'
 COPY .\out_oms.so 'C:\\omsagentwindows\\'
 COPY .\parsers.conf 'C:\\omsagentwindows\\'
@@ -65,11 +62,5 @@ FROM mcr.microsoft.com/windows/servercore:$WINDOWS_VERSION as runtime
 
 COPY --from=builder /fluent-bit /fluent-bit
 COPY --from=builder /omsagentwindows /omsagentwindows
-
-#ENV CI_WSID="5e0e87ea-67ac-4779-b6f7-30173b69112a"
-#ENV CI_SHARED_KEY="nqWJ0bSZo7g5p4hr4QLFqMB438csAzPb74HMUHb8086Ne6lrkF/vVUyg/jHDGWHACaUJVX6W/6hxX2Gh+2Uhcg=="
-#ENV CI_DOMAIN="opinsights.azure.com"
-
-#ENTRYPOINT ["powershell"]
 
 ENTRYPOINT ["powershell", "c:\\omsagentwindows\\backgroundrunner.ps1"]
