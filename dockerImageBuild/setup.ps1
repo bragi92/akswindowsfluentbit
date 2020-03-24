@@ -4,15 +4,19 @@
 #ARG FLUENTBIT_URL=https://ci.appveyor.com/api/buildjobs/37lho3xf8j5i6crj/artifacts/build%2Ftd-agent-bit-1.4.0-win64.zip
 
 Write-Host ('Cleaning up existing folders')
-    $folders = ["/installation", "/omsagentwindows", "/fluent-bit"]
-    if (Test-Path $folder) { Remove-Item $folder -Recurse; }
-    Remove-Item /installation -Recurse -Force -Confirm:$false
-    Remove-Item /omsagentwindows -Recurse -Force -Confirm:$false
-    Remove-Item /fluent-bit -Recurse -Force -Confirm:$false
+    $folders = @("/installation", "/omsagentwindows", "/fluent-bit")
+    foreach ($folder in $folders) {
+        if (Test-Path $folder) { Remove-Item $folder -Recurse; }
+    }
+        
+    # Remove-Item /installation -Recurse -Force -Confirm:$false
+    # Remove-Item /omsagentwindows -Recurse -Force -Confirm:$false
+    # Remove-Item /fluent-bit -Recurse -Force -Confirm:$false
 
 Write-Host ('Creating folders')
     New-Item -Type Directory -Path /installation -ErrorAction SilentlyContinue
     New-Item -Type Directory -Path /fluent-bit -ErrorAction SilentlyContinue
+    New-Item -Type Directory -Path /omsagentwindows
 
 Push-Location \installation
 
@@ -50,7 +54,6 @@ Write-Host ('Installing Visual C++ Redistributable Package')
     $vcArgs = "/install /quiet /norestart"
     $ProgressPreference = 'SilentlyContinue'
     Invoke-WebRequest -Uri $vcRedistLocation -OutFile $vcInstallerLocation
-    $ProgressPreference = 'Continue'
     Start-Process $vcInstallerLocation -ArgumentList $vcArgs -NoNewWindow -Wait
     Copy-Item -Path /Windows/System32/msvcp140.dll -Destination /fluent-bit/bin
     Copy-Item -Path /Windows/System32/vccorlib140.dll -Destination /fluent-bit/bin 
@@ -59,8 +62,5 @@ Write-Host ('Finished Installing Visual C++ Redistributable Package')
 
 Write-Host ("Extracting windows fluent-bit package")
     $fluentBitPath = "\omsagentwindows"
-    New-Item -Type Directory -Path $fluentBitPath
     Expand-Archive -Path $windowsLogAksPackageLocation -Destination $fluentBitPath -ErrorAction SilentlyContinue
 Write-Host ("Finished Extracting fluentbit package")
-
-Pop-Location

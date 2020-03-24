@@ -1,12 +1,12 @@
 # escape=`
 
-ARG WINDOWS_VERSION=1809
+#ARG WINDOWS_VERSION=1809
 
 #
 # Builder Image - Windows Server Core
 # Assemble the components required to run Fluent Bit
 #
-FROM mcr.microsoft.com/windows/servercore:$WINDOWS_VERSION 
+FROM mcr.microsoft.com/windows/servercore:1903
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'SilentlyContinue'; $ProgressPreference = 'SilentlyContinue';"]
 #SHELL ["powershell"]
