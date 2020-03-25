@@ -351,7 +351,7 @@ namespace ConsoleApp1
 
             var agentGuid = Guid.NewGuid().ToString("B");
 
-            Environment.SetEnvironmentVariable("CI_AGENT_GUID", agentGuid);
+            Environment.SetEnvironmentVariable("CI_AGENT_GUID", agentGuid, EnvironmentVariableTarget.Machine);
 
             try
             {
