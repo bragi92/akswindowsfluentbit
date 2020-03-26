@@ -14,7 +14,7 @@ spec:
    serviceAccountName: omsagent
    containers:
      - name: omsagent-private-preview-windows 
-       image: bragi92/fluentbit:03192020
+       image: bragi92/fluentbit:03252020_1
        imagePullPolicy: Always
        resources:
         limits:
@@ -29,7 +29,7 @@ spec:
        - name: CI_SHARED_KEY
          value: "nqWJ0bSZo7g5p4hr4QLFqMB438csAzPb74HMUHb8086Ne6lrkF/vVUyg/jHDGWHACaUJVX6W/6hxX2Gh+2Uhcg=="
        - name: AKS_RESOURCE_ID
-         value: "/subscriptions/692aea0b-2d89-4e7e-ae30-fffe40782ee2/resourceGroups/kaveeshINeedRbac/providers/Microsoft.ContainerService/managedClusters/kaveeshINeedRbac"
+         value: "/subscriptions/72c8e8ca-dc16-47dc-b65c-6b5875eb600a/resourcegroups/kaveeshwin/providers/Microsoft.ContainerService/managedClusters/kaveeshwin"
        - name: AKS_REGION
          value: "westeurope"
        - name: CONTROLLER_TYPE

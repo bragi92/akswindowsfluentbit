@@ -12,3 +12,17 @@ C:\Users\kadubey\Source\Repos\ConsoleApp1\bin\Debug\netcoreapp2.1\Newtonsoft.Jso
 C:\Users\kadubey\Source\Repos\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.csproj.CopyComplete
 C:\Users\kadubey\Source\Repos\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.dll
 C:\Users\kadubey\Source\Repos\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.pdb
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\bin\Debug\netcoreapp2.1\ConsoleApp1.deps.json
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\bin\Debug\netcoreapp2.1\ConsoleApp1.runtimeconfig.json
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\bin\Debug\netcoreapp2.1\ConsoleApp1.runtimeconfig.dev.json
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\bin\Debug\netcoreapp2.1\ConsoleApp1.dll
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\bin\Debug\netcoreapp2.1\ConsoleApp1.pdb
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\bin\Debug\netcoreapp2.1\BouncyCastle.Crypto.dll
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\bin\Debug\netcoreapp2.1\Newtonsoft.Json.dll
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.csprojAssemblyReference.cache
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.csproj.CoreCompileInputs.cache
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.AssemblyInfoInputs.cache
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.AssemblyInfo.cs
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.csproj.CopyComplete
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.dll
+E:\git_repositories_e\akswindowsfluentbit\certificateGeneratorCode\ConsoleApp1\obj\Debug\netcoreapp2.1\ConsoleApp1.pdb
