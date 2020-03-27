@@ -95,6 +95,43 @@ module OMS
             return req, http
         end
 
+        # Call dotnet exectuable here to request new certificate
+        def renew_certs
+            return system("C:\\omsagentwindows\\ConsoleApp1.exe")
+        end
+
+        # Updates the CERTIFICATE_UPDATE_ENDPOINT variable and renews certificate if requested
+        def apply_certificate_update_endpoint(server_resp)
+            update_attr = ""
+            cert_update_endpoint = ""
+            # Extract the certificate update endpoint from the server response
+            endpoint_tag_regex = /\<CertificateUpdateEndpoint.*updateCertificate=\"(?<update_cert>(true|false))\".*(?<cert_update_endpoint>https.*RenewCertificate).*CertificateUpdateEndpoint\>/
+            endpoint_tag_regex.match(server_resp) { |match|
+                cert_update_endpoint = match["cert_update_endpoint"]
+                update_attr = match["update_cert"]
+            }
+            if cert_update_endpoint.empty?
+                puts "Could not extract the update certificate endpoint."
+                return 1#OMS::MISSING_CERT_UPDATE_ENDPOINT
+            elsif update_attr.empty?
+                puts "Could not find the updateCertificate tag in OMS Agent management service telemetry response"
+                return 1#OMS::ERROR_EXTRACTING_ATTRIBUTES
+            end
+
+            # Check in the response if the certs should be renewed
+            if update_attr == "true"
+                puts "Update certificate attribute is set to true"
+                renew_certs_ret = renew_certs
+                if renew_certs_ret != 0
+                    return renew_certs_ret
+                end
+            else
+                puts "no update needed"
+            end
+
+            return cert_update_endpoint
+        end
+
         def register_certs()
             puts "Register certs starts..."
 
@@ -121,15 +158,14 @@ module OMS
                 puts "OMS agent management service topology request response code: #{res.code}"
                 puts "#{res.body}"
                 if res.code == "200"
-                    # cert_apply_res = apply_certificate_update_endpoint(res.body)
-                    # if cert_apply_res.class != String
-                    #     return cert_apply_res
-                    # else
-                    #     puts "OMS agent management service topology request success"
-                    #     return 0
-                    # end
-                    puts "Request succeded"
-                    return 0
+                    puts "Request succeded, now checking for update"
+                    cert_apply_res = apply_certificate_update_endpoint(res.body)
+                    if cert_apply_res.class != String
+                        return cert_apply_res
+                    else
+                        puts "OMS agent management service topology request success"
+                        return 0
+                    end
                 else
                     puts "Error sending OMS agent management service topology request . HTTP code #{res.code}"
                     puts "Body -> #{res.body}"
