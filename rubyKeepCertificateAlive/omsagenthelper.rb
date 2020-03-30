@@ -97,7 +97,14 @@ module OMS
 
         # Call dotnet exectuable here to request new certificate
         def renew_certs
-            return system("C:\\omsagentwindows\\ConsoleApp1.exe")
+            systemCommandResult = system("C:\\omsagentwindows\\ConsoleApp1.exe")
+            if systemCommandResult == true
+                return 0;
+            elsif systemCommandResult == false
+                return OMS::ERROR_RENEWING_CERTS
+            else
+                return OMS::ERROR_EXECUTING_RENEW_CERTS_COMMAND
+            end
         end
 
         # Updates the CERTIFICATE_UPDATE_ENDPOINT variable and renews certificate if requested
@@ -112,10 +119,10 @@ module OMS
             }
             if cert_update_endpoint.empty?
                 puts "Could not extract the update certificate endpoint."
-                return 1#OMS::MISSING_CERT_UPDATE_ENDPOINT
+                return OMS::MISSING_CERT_UPDATE_ENDPOINT
             elsif update_attr.empty?
                 puts "Could not find the updateCertificate tag in OMS Agent management service telemetry response"
-                return 1#OMS::ERROR_EXTRACTING_ATTRIBUTES
+                return OMS::ERROR_EXTRACTING_ATTRIBUTES
             end
 
             # Check in the response if the certs should be renewed
@@ -169,11 +176,11 @@ module OMS
                 else
                     puts "Error sending OMS agent management service topology request . HTTP code #{res.code}"
                     puts "Body -> #{res.body}"
-                    return 1#OMS::HTTP_NON_200
+                    return OMS::HTTP_NON_200
                 end
             else
                 puts "Error sending OMS agent management service topology request . No HTTP code"
-                return 1#OMS::ERROR_SENDING_HTTP
+                return OMS::ERROR_SENDING_HTTP
             end
         end
     end
@@ -188,5 +195,6 @@ if __FILE__ == $0
         ENV["CI_AGENT_GUID"]
     )
     ret_code = maintenance.register_certs()
+    puts "Return code is #{ret_code} : (0 == Good, anything else == bad)"
     exit ret_code
 end
