@@ -3,28 +3,28 @@
 #
 #ARG FLUENTBIT_URL=https://ci.appveyor.com/api/buildjobs/37lho3xf8j5i6crj/artifacts/build%2Ftd-agent-bit-1.4.0-win64.zip
 
-Write-Host ('Cleaning up existing folders')
-    $folders = @("/installation", "/omsagentwindows", "/fluent-bit")
-    foreach ($folder in $folders) {
-        if (Test-Path $folder) { Remove-Item $folder -Recurse; }
-    }
+# Write-Host ('Cleaning up existing folders')
+#     $folders = @("/installation", "/omsagentwindows", "/fluent-bit")
+#     foreach ($folder in $folders) {
+#         if (Test-Path $folder) { Remove-Item $folder -Recurse; }
+#     }
         
-    # Remove-Item /installation -Recurse -Force -Confirm:$false
-    # Remove-Item /omsagentwindows -Recurse -Force -Confirm:$false
-    # Remove-Item /fluent-bit -Recurse -Force -Confirm:$false
-
 Write-Host ('Creating folders')
     New-Item -Type Directory -Path /installation -ErrorAction SilentlyContinue
     New-Item -Type Directory -Path /fluent-bit -ErrorAction SilentlyContinue
     New-Item -Type Directory -Path /omsagentwindows
 
-Push-Location \installation
-
-Write-Host('Downloading windows fluent bit container package')
+Write-Host('Downloading windows fluentbit package')
     $windowsLogPackageUri = "https://github.com/r-dilip/goPlugins-fluentbit/releases/download/windowsakslog/windows-log-aks-package.zip" 
     $windowsLogAksPackageLocation = "\installation\windows-log-aks-package.zip"
     Invoke-WebRequest -Uri $windowsLogPackageUri -OutFile $windowsLogAksPackageLocation
-Write-Host ("Finished downloading fluent bit package for windows logs")
+Write-Host ("Finished downloading fluentbit package for windows logs")
+
+Write-Host ("Extracting windows fluentbit container package")
+    $fluentBitPath = "\omsagentwindows"
+    Expand-Archive -Path $windowsLogAksPackageLocation -Destination $fluentBitPath -ErrorAction SilentlyContinue
+Write-Host ("Finished Extracting windows fluentbit package")
+
 
 Write-Host ('Installing Fluent Bit'); 
     $fluentBitUri='https://github.com/bragi92/windowslog/raw/master/td-agent-bit-1.4.0-win64.zip'
@@ -32,20 +32,6 @@ Write-Host ('Installing Fluent Bit');
     Expand-Archive -Path /installation/td-agent-bit.zip -Destination /installation/fluent-bit
     Move-Item -Path /installation/fluent-bit/*/* -Destination /fluent-bit/ -ErrorAction SilentlyContinue
 Write-Host ('Finished Installing Fluentbit')
-
-Write-Host ('Installing Ruby')
-    $RUBY_VERSION='2.7.0-1'
-    $RUBY_EXE_LOCATION = "https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-$RUBY_VERSION/rubyinstaller-$RUBY_VERSION-x64.exe"
-    $rubyExePath = "\installation\ruby-install.exe"
-    $rubyArgs = "/silent /dir=\Ruby /tasks='assocfiles,modpath'"
-
-    Invoke-WebRequest -Uri $RUBY_EXE_LOCATION -OutFile $rubyExePath
-    $ruby_inst_process = Start-Process -FilePath $rubyExePath -ArgumentList $rubyArgs -PassThru -Wait
-    if ($ruby_inst_process.ExitCode -ne 0) {
-        "Ruby $RUBY_VERSION installation failed"
-        exit 1
-    }
-Write-Host ('Finished Installing Ruby')
 
 
 Write-Host ('Installing Visual C++ Redistributable Package')
@@ -60,7 +46,6 @@ Write-Host ('Installing Visual C++ Redistributable Package')
     Copy-Item -Path /Windows/System32/vcruntime140.dll -Destination /fluent-bit/bin
 Write-Host ('Finished Installing Visual C++ Redistributable Package')
 
-Write-Host ("Extracting windows fluent-bit package")
-    $fluentBitPath = "\omsagentwindows"
-    Expand-Archive -Path $windowsLogAksPackageLocation -Destination $fluentBitPath -ErrorAction SilentlyContinue
-Write-Host ("Finished Extracting fluentbit package")
+Remove-Item /installation -Recurse
+
+Write-Host ("Removing Install folder")
