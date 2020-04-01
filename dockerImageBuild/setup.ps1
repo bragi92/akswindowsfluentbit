@@ -13,6 +13,7 @@ Write-Host ('Creating folders')
     New-Item -Type Directory -Path /installation -ErrorAction SilentlyContinue
     New-Item -Type Directory -Path /fluent-bit -ErrorAction SilentlyContinue
     New-Item -Type Directory -Path /omsagentwindows
+    New-Item -Type Directory -Path /opt
 
 Write-Host('Downloading windows fluentbit package')
     $windowsLogPackageUri = "https://github.com/r-dilip/goPlugins-fluentbit/releases/download/windowsakslog/windows-log-aks-package.zip" 
