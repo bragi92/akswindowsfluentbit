@@ -40,7 +40,7 @@ module Fluent
                 ENV["CI_AGENT_GUID"]
             )
             ret_code = maintenance.register_certs()
-            puts "Return code from register certs : " + ret_code
+            puts "Return code from register certs : #{ret_code}"
         end
 
         def shutdown

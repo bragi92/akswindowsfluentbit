@@ -21,6 +21,7 @@ module OMS
 
         # Initialize onboarding helper, If these values do not exist fail horribly
         def initialize(workspace_id, domain, agent_guid)
+            # DO nil check for parameters here
             @workspace_id = workspace_id
             @domain = domain
             @certificate_update_endpoint = "https://" + workspace_id + "." + domain + "/ConfigurationService.Svc/RenewCertificate"
