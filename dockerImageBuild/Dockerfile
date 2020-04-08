@@ -38,15 +38,22 @@ COPY ./log-data-collection-settings /etc/config/settings
 
 EXPOSE 24224 5140
 
-# copy setup.ps1 to temp folder
+# copy powershell scripts to temp folder
 RUN mkdir /tmp
 ENV tmpdir /tmp
 WORKDIR ${tmpdir}
 COPY ./setup.ps1 ${tmpdir}
 RUN ./setup.ps1
 
-ENV AZMON_AGENT_CFG_SCHEMA_VERSION "v1"
+COPY ./main.ps1 ${tmpdir}
+COPY ./filesystemwatcher.ps1 ${tmpdir}
 
-SHELL ["cmd"]
-#ENTRYPOINT ["cmd", "/k", "fluentd", "-c", "C:\\fluent\\conf\\fluent.conf"]
-ENTRYPOINT ["powershell"]
+COPY ./livenessprobe.ps1 /opt
+
+# copy ruby scripts to /opt folder
+COPY ./tomlparser.rb /opt
+COPY ./ConfigParseErrorLogger.rb /opt
+
+COPY ./fluent.conf /etc/fluent/
+COPY ./fluent-bit.conf /omsagentwindows/
+ENTRYPOINT ["powershell", "C:\\tmp\\main.ps1"]

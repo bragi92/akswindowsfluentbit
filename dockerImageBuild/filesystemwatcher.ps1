@@ -1,39 +1,52 @@
-#region Build  FileSystemWatcher
-$FileSystemWatcher = New-Object  System.IO.FileSystemWatcher
-$Path = 'C:\etc\config\settings'
+
+Start-Transcript -Path fileSystemWatcherTranscript.txt
+Write-Host "Removing Existing Event Subscribers"
+Get-EventSubscriber -Force | ForEach-Object { $_.SubscriptionId } | ForEach-Object { Unregister-Event -SubscriptionId $_ }
+Write-Host "Starting File System Watcher for config map updates"
+$FileSystemWatcher = New-Object System.IO.FileSystemWatcher
+$Path = "C:\etc\config\settings"
 $FileSystemWatcher.Path = $Path
 $FileSystemWatcher.IncludeSubdirectories = $True
 $EventName = 'Changed', 'Created', 'Deleted', 'Renamed'
+$user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+Write-Host $user
+Write-Host $env:USERPROFILE
 
 $Action = {
-    Switch ($Event.SourceEventArgs.ChangeType) {
-        'Renamed' {
-            $Object = "{0} was  {1} to {2} at {3}" -f $Event.SourceArgs[-1].OldFullPath,
-            $Event.SourceEventArgs.ChangeType,
-            $Event.SourceArgs[-1].FullPath,
-            $Event.TimeGenerated
-        }
-        Default {
-            $Object = "{0} was  {1} at {2}" -f $Event.SourceEventArgs.FullPath,
-            $Event.SourceEventArgs.ChangeType,
-            $Event.TimeGenerated
-        }
-    }
-    $WriteHostParams = @{
-        ForegroundColor = 'Green'
-        BackgroundColor = 'Black'
-        Object          = $Object
-    }
-    Write-Host  @WriteHostParams
+    $fileSystemWatcherStatusPath = "C:\opt\filesystemwatcher.txt"
+    $fileSystemWatcherLog = "{0} was  {1} at {2}" -f $Event.SourceEventArgs.FullPath,
+    $Event.SourceEventArgs.ChangeType,
+    $Event.TimeGenerated
+    Write-Host $fileSystemWatcherLog
+    Add-Content -Path $fileSystemWatcherStatusPath -Value $fileSystemWatcherLog
 }
 
 $ObjectEventParams = @{
     InputObject = $FileSystemWatcher
     Action      = $Action
 }
-ForEach ($Item in  $EventName) {
+
+ForEach ($Item in $EventName) {
     $ObjectEventParams.EventName = $Item
     $ObjectEventParams.SourceIdentifier = "File.$($Item)"
-    Write-Verbose  "Starting watcher for Event: $($Item)"
+    Write-Host  "Starting watcher for Event: $($Item)"
     $Null = Register-ObjectEvent  @ObjectEventParams
+}
+
+Get-EventSubscriber -Force 
+
+# keep this running for the container's lifetime, so that it can listen for changes to the config map mount path
+try
+{
+    do
+    {
+        Wait-Event -Timeout 60
+        Write-Host "." -NoNewline
+        
+    } while ($true)
+}
+finally
+{
+    Get-EventSubscriber -Force | ForEach-Object { $_.SubscriptionId } | ForEach-Object { Unregister-Event -SubscriptionId $_ }
+    Write-Host "Event Handler disabled."
 }
