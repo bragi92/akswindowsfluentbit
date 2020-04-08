@@ -50,3 +50,5 @@ Write-Host ('Finished Installing Visual C++ Redistributable Package')
 Remove-Item /installation -Recurse
 
 Write-Host ("Removing Install folder")
+
+gem install gyoku
