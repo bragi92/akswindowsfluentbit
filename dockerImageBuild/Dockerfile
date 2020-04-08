@@ -55,5 +55,6 @@ COPY ./tomlparser.rb /opt
 COPY ./ConfigParseErrorLogger.rb /opt
 
 COPY ./fluent.conf /etc/fluent/
+COPY ./rubyKeepCertificateAlive/*.rb /etc/fluent/plugin/
 COPY ./fluent-bit.conf /omsagentwindows/
 ENTRYPOINT ["powershell", "C:\\tmp\\main.ps1"]
