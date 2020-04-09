@@ -63,6 +63,7 @@ spec:
             - powershell
             - -c
             - C:\opt\livenessProbe.ps1
+        initialDelaySeconds: 60
    nodeSelector:
     beta.kubernetes.io/os: windows    
    # Tolerate a NoSchedule taint on master that ACS Engine sets.
