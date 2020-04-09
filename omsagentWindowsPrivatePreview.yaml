@@ -57,12 +57,12 @@ spec:
         - mountPath: C:\var
           name: docker-windows-kuberenetes-container-logs
           #readOnly: true
-      #  livenessProbe:
-      #   exec:
-      #     command:
-      #       - powershell
-      #       - -c
-      #       - C:\opt\livenessProbe.ps1
+       livenessProbe:
+        exec:
+          command:
+            - powershell
+            - -c
+            - C:\opt\livenessProbe.ps1
    nodeSelector:
     beta.kubernetes.io/os: windows    
    # Tolerate a NoSchedule taint on master that ACS Engine sets.
