@@ -11,12 +11,22 @@ else {
     Write-Host "Fluent-bit process IS running"
 }
 
-if (Test-Path /opt/filesystemwatcher.txt) {
-    Write-Host "Config Map UPDATED since container start"
-    exit 1
+# if (Test-Path /opt/filesystemwatcher.txt) {
+#     Write-Host "Config Map UPDATED since container start"
+#     exit 1
+# }
+# else {
+#     Write-Host "Config Map NOT UPDATED since start"
+# }
+
+$ISFluentdRunning = Get-Service fluentdwinaks -ErrorAction SilentlyContinue
+
+If ($ISFluentdRunning) {
+    Write-Host "Fluentd service IS running"
 }
 else {
-    Write-Host "Config Map NOT UPDATED since start"
+    Write-Host "Fluentd service NOT running"
+    exit 1
 }
 
 exit 0
