@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: dilipr-win-logger-app
+spec:
+  replicas: 1
+  selector:
+   matchLabels:
+    app: dilipr-win-logger-app
+  template:
+   metadata:
+    labels:
+     app: dilipr-win-logger-app
+   spec:
+    volumes:
+    - name: html
+      emptyDir: {}
+    containers:
+    - name: dilipr-win-logger-app
+      image: mcr.microsoft.com/windows/servercore:ltsc2019
+      command: ["powershell", "-c"]
+      args:
+        - "$counter = 1; For(;;) { echo $counter; Start-Sleep -Seconds 5; $counter++; }"
+    tolerations:
+     - key: "node-role.kubernetes.io/master"
+       operator: "Equal"
+       value: "true"
+       effect: "NoSchedule"
