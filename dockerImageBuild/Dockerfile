@@ -49,7 +49,7 @@ COPY ./scripts/ruby/*.rb /opt/omsagentwindows/scripts/ruby/
 COPY ./omsagentwindows/out_oms.so /opt/omsagentwindows/out_oms.so
 
 COPY ./fluentd/fluent.conf /etc/fluentd/
-COPY ./rubyKeepCertificateAlive/*.rb /etc/fluent/plugin/
+COPY ./fluentd/rubyKeepCertificateAlive/*.rb /etc/fluent/plugin/
 COPY ./fluent-bit/fluent-bit.conf /etc/fluent-bit
 COPY ./omsagentwindows/out_oms.conf /etc/omsagentwindows
 
