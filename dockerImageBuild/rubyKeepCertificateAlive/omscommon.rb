@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Why do the above though win windows? Check in Perf testing 
+
 module OMS
     # kaveesh: These error codes are from the base OMS Agent for linux and for consistency I'm keeping them as is because the numbers don't really make a difference to us.
     # https://github.com/microsoft/OMS-Agent-for-Linux/blob/824c40889ba0c0a819a97184846c4abef30f474c/source/code/plugins/agent_common.rb#L33

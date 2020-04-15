@@ -1,0 +1,36 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: five-second-win-logger-app
+spec:
+  replicas: 1
+  selector:
+   matchLabels:
+    app: five-second-win-logger-app
+  template:
+   metadata:
+    labels:
+     app: five-second-win-logger-app
+   spec:
+    volumes:
+    - name: html
+      emptyDir: {}
+    containers:
+    - name: five-second-win-logger-app
+      image: bragi92/json3logentries:1
+      command: ["powershell", "-c"]
+      args:
+        - "$counter = 1; For(;;) { C:\\ConsoleApp1.exe; Start-Sleep -Seconds 5; $counter++; }"
+      volumeMounts:
+        - mountPath: C:\var\
+          name: host
+          readOnly: true
+    tolerations:
+     - key: "node-role.kubernetes.io/master"
+       operator: "Equal"
+       value: "true"
+       effect: "NoSchedule"
+    volumes:
+    - name: host
+      hostPath:
+        path: C:\var

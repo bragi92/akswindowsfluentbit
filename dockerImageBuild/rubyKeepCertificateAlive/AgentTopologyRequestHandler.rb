@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Why do the above though win windows? Check in Perf testing 
+
 module OMS
 
     require_relative 'omscommon'

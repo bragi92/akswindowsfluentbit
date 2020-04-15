@@ -1,0 +1,3 @@
+{"log":"Id     Name            PSJobTypeName   State         HasMoreData     Location  \r\n","stream":"stdout","time":"2020-04-14T21:25:48.7320914Z"}
+{"log":"--     ----            -------------   -----         -----------     --------  \r\n","stream":"stdout","time":"2020-04-14T21:25:48.733156Z"}
+{"log":"1      Job1            BackgroundJob   Running       True            localhost \r\n","stream":"stdout","time":"2020-04-14T21:25:48.7340925Z"}
