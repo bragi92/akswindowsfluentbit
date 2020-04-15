@@ -14,7 +14,7 @@ spec:
    serviceAccountName: omsagent
    containers:
      - name: omsagent-private-preview-windows 
-       image: bragi92/fluentd_fluentbit_test:5 #mcr.microsoft.com/azuremonitor/containerinsights/cidev:windowsprivatepreview03132020_2
+       image:  bragi92/office_release:1 #mcr.microsoft.com/azuremonitor/containerinsights/cidev:windowsprivatepreview03132020_2
        imagePullPolicy: Always
        resources:
         limits:
@@ -62,8 +62,8 @@ spec:
           command:
             - powershell
             - -c
-            - C:\opt\livenessProbe.ps1
-        initialDelaySeconds: 60
+            - C:\opt\omsagentwindows\scripts\powershell\livenessProbe.ps1
+        initialDelaySeconds: 120
    nodeSelector:
     beta.kubernetes.io/os: windows    
    # Tolerate a NoSchedule taint on master that ACS Engine sets.
