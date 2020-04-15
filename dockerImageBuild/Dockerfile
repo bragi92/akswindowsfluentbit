@@ -29,32 +29,32 @@ FROM mcr.microsoft.com/azuremonitor/containerinsights/cidev:winakslog-1809
 # COPY fluent.conf /fluent/conf/fluent.conf
 
 SHELL ["powershell"]
-RUN mkdir /omsagent
-RUN mkdir -p /etc/opt/microsoft/docker-cimprov/
-RUN mkdir -p /etc/config/settings/
-
-COPY *.rb /omsagent/
-COPY ./log-data-collection-settings /etc/config/settings
 
 EXPOSE 24224 5140
 
-# copy powershell scripts to temp folder
-RUN mkdir /tmp
-ENV tmpdir /tmp
-WORKDIR ${tmpdir}
-COPY ./setup.ps1 ${tmpdir}
+ENV tmpdir /opt/omsagentwindows/scripts/powershell
+
+WORKDIR /opt/omsagentwindows/scripts/powershell
+COPY ./scripts/powershell/setup.ps1 /opt/omsagentwindows/scripts/powershell
 RUN ./setup.ps1
 
-COPY ./main.ps1 ${tmpdir}
-COPY ./filesystemwatcher.ps1 ${tmpdir}
-
-COPY ./livenessprobe.ps1 /opt
+COPY ./scripts/powershell/main.ps1 /opt/omsagentwindows/scripts/powershell
+COPY ./scripts/powershell/filesystemwatcher.ps1 /opt/omsagentwindows/scripts/powershell
+COPY ./scripts/powershell/livenessprobe.ps1 /opt/omsagentwindows/scripts/powershell
 
 # copy ruby scripts to /opt folder
-COPY ./tomlparser.rb /opt
-COPY ./ConfigParseErrorLogger.rb /opt
+COPY ./scripts/ruby/*.rb /opt/omsagentwindows/scripts/ruby/
 
-COPY ./fluent.conf /etc/fluent/
+# COPY out_oms.so
+COPY ./omsagentwindows/out_oms.so /opt/omsagentwindows/out_oms.so
+
+COPY ./fluentd/fluent.conf /etc/fluentd/
 COPY ./rubyKeepCertificateAlive/*.rb /etc/fluent/plugin/
-COPY ./fluent-bit.conf /omsagentwindows/
-ENTRYPOINT ["powershell", "C:\\tmp\\main.ps1"]
+COPY ./fluent-bit/fluent-bit.conf /etc/fluent-bit
+COPY ./omsagentwindows/out_oms.conf /etc/omsagentwindows
+
+ENV CONTROLLER_TYPE="DaemonSet"
+ENV AGENT_VERSION="winakslogprivatepreview"
+ENV OS_TYPE "windows"
+
+ENTRYPOINT ["powershell", "C:\\opt\\omsagentwindows\\scripts\\powershell\\main.ps1"]
