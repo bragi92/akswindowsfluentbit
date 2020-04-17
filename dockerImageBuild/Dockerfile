@@ -32,13 +32,13 @@ FROM mcr.microsoft.com/azuremonitor/containerinsights/cidev:winakslog-1809
 
 SHELL ["powershell"]
 
-# EXPOSE 24224 5140
+EXPOSE 24224 5140
 
-# ENV tmpdir /opt/omsagentwindows/scripts/powershell
+ENV tmpdir /opt/omsagentwindows/scripts/powershell
 
-# WORKDIR /opt/omsagentwindows/scripts/powershell
-# COPY ./scripts/powershell/setup.ps1 /opt/omsagentwindows/scripts/powershell
-# RUN ./setup.ps1
+WORKDIR /opt/omsagentwindows/scripts/powershell
+COPY ./scripts/powershell/setup.ps1 /opt/omsagentwindows/scripts/powershell
+RUN ./setup.ps1
 
 COPY ./scripts/powershell/main.ps1 /
 # COPY ./scripts/powershell/main.ps1 /opt/omsagentwindows/scripts/powershell
