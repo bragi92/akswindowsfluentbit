@@ -14,7 +14,7 @@ spec:
    serviceAccountName: omsagent
    containers:
      - name: omsagent-private-preview-windows 
-       image:  bragi92/office_release:13 #mcr.microsoft.com/azuremonitor/containerinsights/cidev:windowsprivatepreview_04152020_v5
+       image:  bragi92/office_release:14 #mcr.microsoft.com/azuremonitor/containerinsights/cidev:windowsprivatepreview_04152020_v5
        imagePullPolicy: Always
        resources:
         limits:

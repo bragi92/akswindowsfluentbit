@@ -7,14 +7,14 @@
 #     return $false
 # }
 
-# function Remove-WindowsServiceIfItExists($name)
-# {   
-#     $exists = Confirm-WindowsServiceExists $name
-#     if ($exists)
-#     {    
-#         sc.exe \\server delete $name
-#     }       
-# }
+function Remove-WindowsServiceIfItExists($name)
+{   
+    $exists = Confirm-WindowsServiceExists $name
+    if ($exists)
+    {    
+        sc.exe \\server delete $name
+    }       
+}
 
 # function Start-FileSystemWatcher
 # {
@@ -60,36 +60,36 @@
 
 # #register fluentd as a windows service
 
-# function Set-EnvironmentVariables
-# {
-#     #set agent config schema version
-#     $schemaVersionFile = '/etc/config/settings/schema-version'
-#     if (Test-Path $schemaVersionFile) {
-#         $schemaVersion = Get-Content $schemaVersionFile | ForEach-Object { $_.TrimEnd() } 
-#         if ($schemaVersion.GetType().Name -eq 'String') {
-#             [System.Environment]::SetEnvironmentVariable("AZMON_AGENT_CFG_SCHEMA_VERSION", $schemaVersion, "Process")
-#             [System.Environment]::SetEnvironmentVariable("AZMON_AGENT_CFG_SCHEMA_VERSION", $schemaVersion, "Machine")
-#         }
-#         $env:AZMON_AGENT_CFG_SCHEMA_VERSION
-#     }
+function Set-EnvironmentVariables
+{
+    #set agent config schema version
+    $schemaVersionFile = '/etc/config/settings/schema-version'
+    if (Test-Path $schemaVersionFile) {
+        $schemaVersion = Get-Content $schemaVersionFile | ForEach-Object { $_.TrimEnd() } 
+        if ($schemaVersion.GetType().Name -eq 'String') {
+            [System.Environment]::SetEnvironmentVariable("AZMON_AGENT_CFG_SCHEMA_VERSION", $schemaVersion, "Process")
+            [System.Environment]::SetEnvironmentVariable("AZMON_AGENT_CFG_SCHEMA_VERSION", $schemaVersion, "Machine")
+        }
+        $env:AZMON_AGENT_CFG_SCHEMA_VERSION
+    }
 
-#     # run config parser
-#     ruby /opt/omsagentwindows/scripts/ruby/tomlparser.rb
-#     .\setenv.ps1
-# }
+    # run config parser
+    ruby /opt/omsagentwindows/scripts/ruby/tomlparser.rb
+    .\setenv.ps1
+}
 
-# function Start-Fluent 
-# {
-#     # Run fluent-bit service first so that we do not miss any logs being forwarded by the fluentd service.
-#     # Run fluent-bit as a background job. Switch this to a windows service once fluent-bit supports natively running as a windows service
-#     #Start-Job -ScriptBlock { Start-Process -NoNewWindow -FilePath "C:\opt\fluent-bit\bin\fluent-bit.exe" -ArgumentList @("-c", "C:\etc\fluent-bit\fluent-bit.conf", "-e", "C:\opt\omsagentwindows\out_oms.so") }
+function Start-Fluent 
+{
+    # Run fluent-bit service first so that we do not miss any logs being forwarded by the fluentd service.
+    # Run fluent-bit as a background job. Switch this to a windows service once fluent-bit supports natively running as a windows service
+    #Start-Job -ScriptBlock { Start-Process -NoNewWindow -FilePath "C:\opt\fluent-bit\bin\fluent-bit.exe" -ArgumentList @("-c", "C:\etc\fluent-bit\fluent-bit.conf", "-e", "C:\opt\omsagentwindows\out_oms.so") }
 
-#     #register fluentd as a service and start 
-#     # there is a known issues with win32-service https://github.com/chef/win32-service/issues/70
-#     #fluentd --reg-winsvc i --reg-winsvc-auto-start --winsvc-name fluentdwinaks --reg-winsvc-fluentdopt '-c C:/etc/fluentd/fluent.conf -o C:/etc/fluentd/fluent.log'
+    #register fluentd as a service and start 
+    # there is a known issues with win32-service https://github.com/chef/win32-service/issues/70
+    #fluentd --reg-winsvc i --reg-winsvc-auto-start --winsvc-name fluentdwinaks --reg-winsvc-fluentdopt '-c C:/etc/fluentd/fluent.conf -o C:/etc/fluentd/fluent.log'
 
     Notepad.exe | Out-Null
-# }
+}
 
 # function Generate-Certificates
 # {
@@ -97,12 +97,12 @@
 #     C:\\opt\\omsagentwindows\\certgenerator\\ConsoleApp1.exe
 # }
 
-# #Start-Transcript -Path main.txt
-# Remove-WindowsServiceIfItExists "fluentdwinaks"
-# #Set-EnvironmentVariables
+Start-Transcript -Path main.txt
+Remove-WindowsServiceIfItExists "fluentdwinaks"
+Set-EnvironmentVariables
 # #Start-FileSystemWatcher
 # #Generate-Certificates
-# Start-Fluent
+Start-Fluent
 
 # # List all powershell processes running. This should have main.ps1 and filesystemwatcher.ps1
 # #Get-WmiObject Win32_process | Where-Object {$_.Name -match 'powershell'} | Format-Table -Property Name, CommandLine, ProcessId
@@ -110,5 +110,5 @@
 # #check if fluentd service is running
 # #Get-Service fluentdwinaks
 
-# #Stop-Transcript
+Stop-Transcript
 
