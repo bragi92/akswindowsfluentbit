@@ -100,7 +100,7 @@ function Generate-Certificates
 Start-Transcript -Path main.txt
 Remove-WindowsServiceIfItExists "fluentdwinaks"
 Set-EnvironmentVariables
-Start-FileSystemWatcher
+#Start-FileSystemWatcher
 Generate-Certificates
 Start-Fluent
 
@@ -110,6 +110,5 @@ Get-WmiObject Win32_process | Where-Object {$_.Name -match 'powershell'} | Forma
 #check if fluentd service is running
 Get-Service fluentdwinaks
 
-
-
+Stop-Transcript
 
