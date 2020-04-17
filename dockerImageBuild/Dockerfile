@@ -1,6 +1,6 @@
-# FROM mcr.microsoft.com/azuremonitor/containerinsights/cidev:winakslog-1809
+FROM mcr.microsoft.com/azuremonitor/containerinsights/cidev:winakslog-1809
 
-FROM mcr.microsoft.com/windows/servercore:1809
+# FROM mcr.microsoft.com/windows/servercore:1809
 
 # # Do not split this into multiple RUN!
 # # Docker creates a layer for every RUN-Statement
