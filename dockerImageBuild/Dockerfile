@@ -40,7 +40,8 @@ SHELL ["powershell"]
 # COPY ./scripts/powershell/setup.ps1 /opt/omsagentwindows/scripts/powershell
 # RUN ./setup.ps1
 
-COPY ./scripts/powershell/main.ps1 /opt/omsagentwindows/scripts/powershell
+COPY ./scripts/powershell/main.ps1 /
+# COPY ./scripts/powershell/main.ps1 /opt/omsagentwindows/scripts/powershell
 # COPY ./scripts/powershell/filesystemwatcher.ps1 /opt/omsagentwindows/scripts/powershell
 # COPY ./scripts/powershell/livenessprobe.ps1 /opt/omsagentwindows/scripts/powershell
 
@@ -59,4 +60,4 @@ COPY ./scripts/powershell/main.ps1 /opt/omsagentwindows/scripts/powershell
 # ENV AGENT_VERSION="winakslogprivatepreview"
 # ENV OS_TYPE "windows"
 
-ENTRYPOINT ["powershell", "C:\\opt\\omsagentwindows\\scripts\\powershell\\main.ps1"]
+ENTRYPOINT ["powershell", "C:\\main.ps1"]
