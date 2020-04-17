@@ -1,4 +1,6 @@
-FROM mcr.microsoft.com/azuremonitor/containerinsights/cidev:winakslog-1809
+# FROM mcr.microsoft.com/azuremonitor/containerinsights/cidev:winakslog-1809
+
+FROM mcr.microsoft.com/windows/servercore:$WINDOWS_VERSION:1809
 
 # # Do not split this into multiple RUN!
 # # Docker creates a layer for every RUN-Statement
@@ -30,31 +32,31 @@ FROM mcr.microsoft.com/azuremonitor/containerinsights/cidev:winakslog-1809
 
 SHELL ["powershell"]
 
-EXPOSE 24224 5140
+# EXPOSE 24224 5140
 
-ENV tmpdir /opt/omsagentwindows/scripts/powershell
+# ENV tmpdir /opt/omsagentwindows/scripts/powershell
 
-WORKDIR /opt/omsagentwindows/scripts/powershell
-COPY ./scripts/powershell/setup.ps1 /opt/omsagentwindows/scripts/powershell
-RUN ./setup.ps1
+# WORKDIR /opt/omsagentwindows/scripts/powershell
+# COPY ./scripts/powershell/setup.ps1 /opt/omsagentwindows/scripts/powershell
+# RUN ./setup.ps1
 
 COPY ./scripts/powershell/main.ps1 /opt/omsagentwindows/scripts/powershell
-COPY ./scripts/powershell/filesystemwatcher.ps1 /opt/omsagentwindows/scripts/powershell
-COPY ./scripts/powershell/livenessprobe.ps1 /opt/omsagentwindows/scripts/powershell
+# COPY ./scripts/powershell/filesystemwatcher.ps1 /opt/omsagentwindows/scripts/powershell
+# COPY ./scripts/powershell/livenessprobe.ps1 /opt/omsagentwindows/scripts/powershell
 
-# copy ruby scripts to /opt folder
-COPY ./scripts/ruby/*.rb /opt/omsagentwindows/scripts/ruby/
+# # copy ruby scripts to /opt folder
+# COPY ./scripts/ruby/*.rb /opt/omsagentwindows/scripts/ruby/
 
-# COPY out_oms.so
-COPY ./omsagentwindows/out_oms.so /opt/omsagentwindows/out_oms.so
+# # COPY out_oms.so
+# COPY ./omsagentwindows/out_oms.so /opt/omsagentwindows/out_oms.so
 
-COPY ./fluentd/fluent.conf /etc/fluentd/
-COPY ./fluentd/rubyKeepCertificateAlive/*.rb /etc/fluent/plugin/
-COPY ./fluent-bit/fluent-bit.conf /etc/fluent-bit
-COPY ./omsagentwindows/out_oms.conf /etc/omsagentwindows
+# COPY ./fluentd/fluent.conf /etc/fluentd/
+# COPY ./fluentd/rubyKeepCertificateAlive/*.rb /etc/fluent/plugin/
+# COPY ./fluent-bit/fluent-bit.conf /etc/fluent-bit
+# COPY ./omsagentwindows/out_oms.conf /etc/omsagentwindows
 
-ENV CONTROLLER_TYPE="DaemonSet"
-ENV AGENT_VERSION="winakslogprivatepreview"
-ENV OS_TYPE "windows"
+# ENV CONTROLLER_TYPE="DaemonSet"
+# ENV AGENT_VERSION="winakslogprivatepreview"
+# ENV OS_TYPE "windows"
 
 ENTRYPOINT ["powershell", "C:\\opt\\omsagentwindows\\scripts\\powershell\\main.ps1"]
