@@ -203,7 +203,7 @@ namespace ConsoleApp1
             // SaveCertificate(certificate);
 
             // For local testing : reading a random cert
-            //string newcer = "E://oms.crt";
+            // string newcer = "E://oms.crt";
             //X509Certificate2 cert1 = new X509Certificate2(newcer);
 
             return certificate;
@@ -388,38 +388,10 @@ namespace ConsoleApp1
             Console.WriteLine("Dotnet executable starting :");
 
 
-            string logAnalyticsWorkspaceID = Environment.GetEnvironmentVariable("CI_WSID");
-            string logAnalyticsWorkspaceSharedKey = Environment.GetEnvironmentVariable("CI_SHARED_KEY");
-            string logAnayticsDomain = Environment.GetEnvironmentVariable("CI_DOMAIN");
-
-
-        X509Certificate2 clientCertificate = RegisterAgentWithOMS(logAnalyticsWorkspaceID, logAnalyticsWorkspaceSharedKey, logAnayticsDomain);
-
-
-            //try
-            //{
-
-            //    Console.WriteLine("In Main ...");
-
-            //    Console.WriteLine($"HostName:{ Dns.GetHostName()}");
-
-            //    Console.WriteLine("Log Analytics Workspace Id: {0}", "5e0e87ea-67ac-4779-b6f7-30173b69112a");
-            //    Console.WriteLine("Log Analytics Workspace Key: {0}", "nqWJ0bSZo7g5p4hr4QLFqMB438csAzPb74HMUHb8086Ne6lrkF/vVUyg/jHDGWHACaUJVX6W/6hxX2Gh+2Uhcg==");
-            //    Console.WriteLine("Log Analytics Workspace Domain: {0}", "opinsights.azure.com");
-
-            //    Console.WriteLine("Registering the uploadTimer to trigger upload");
-
-            //    SendDataToODS_ContainerLog(clientCertificate,
-            //        "5e0e87ea-67ac-4779-b6f7-30173b69112a",
-            //        "opinsights.azure.com",
-            //        "{ \"kind\": \"PodList\"}"
-            //        );
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine($"Exception occurred : {ex.Message}");
-            //}
+            string logAnalyticsWorkspaceID = Environment.GetEnvironmentVariable("WSID");
+            string logAnalyticsWorkspaceSharedKey = Environment.GetEnvironmentVariable("WSKEY");
+            string logAnayticsDomain = Environment.GetEnvironmentVariable("DOMAIN");
+            X509Certificate2 clientCertificate = RegisterAgentWithOMS(logAnalyticsWorkspaceID, logAnalyticsWorkspaceSharedKey, logAnayticsDomain);
         }
 
         public static void SendDataToODS_ContainerLog(X509Certificate2 cert, string logAnalyticsWorkspaceId, string logAnalyticsWorkspaceDomain, string jsonContent)

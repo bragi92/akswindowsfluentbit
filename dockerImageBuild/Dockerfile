@@ -41,6 +41,7 @@ RUN ./setup.ps1
 COPY ./scripts/powershell/main.ps1 /opt/omsagentwindows/scripts/powershell
 COPY ./scripts/powershell/filesystemwatcher.ps1 /opt/omsagentwindows/scripts/powershell
 COPY ./scripts/powershell/livenessprobe.ps1 /opt/omsagentwindows/scripts/powershell
+COPY ./omsagentwindows/certgenerator/* /opt/omsagentwindows/certgenerator/
 
 # copy ruby scripts to /opt folder
 COPY ./scripts/ruby/*.rb /opt/omsagentwindows/scripts/ruby/
@@ -55,5 +56,6 @@ COPY ./omsagentwindows/out_oms.conf /etc/omsagentwindows
 ENV CONTROLLER_TYPE="DaemonSet"
 ENV AGENT_VERSION="winakslogprivatepreview"
 ENV OS_TYPE "windows"
+ENV APPLICATIONINSIGHTS_AUTH "NzAwZGM5OGYtYTdhZC00NThkLWI5NWMtMjA3ZjM3NmM3YmRi"
 
 ENTRYPOINT ["powershell", "C:\\opt\\omsagentwindows\\scripts\\powershell\\main.ps1"]
