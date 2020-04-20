@@ -62,6 +62,36 @@ function Start-FileSystemWatcher
 
 function Set-EnvironmentVariables
 {
+    $domain = "opinsights.azure.com"
+    if (Test-Path /etc/omsagent-secret-win/DOMAIN) {
+        # TODO: Change to omsagent-secret before merging
+        $domain =  Get-Content /etc/omsagent-secret-win/DOMAIN
+    } 
+    
+    # Set DOMAIN
+    [System.Environment]::SetEnvironmentVariable("DOMAIN", $domain, "Process")
+    [System.Environment]::SetEnvironmentVariable("DOMAIN", $domain, "Machine")
+
+    $wsID = ""
+    if (Test-Path /etc/omsagent-secret-win/WSID) {
+        # TODO: Change to omsagent-secret before merging
+        $wsID =  Get-Content /etc/omsagent-secret-win/WSID
+    } 
+    
+    # Set DOMAIN
+    [System.Environment]::SetEnvironmentVariable("WSID", $wsID, "Process")
+    [System.Environment]::SetEnvironmentVariable("WSID", $wsID, "Machine")
+
+    $wsKey = ""
+    if (Test-Path /etc/omsagent-secret-win/KEY) {
+        # TODO: Change to omsagent-secret before merging
+        $wsKey =  Get-Content /etc/omsagent-secret-win/KEY
+    } 
+    
+    # Set KEY
+    [System.Environment]::SetEnvironmentVariable("WSKEY", $wsKey, "Process")
+    [System.Environment]::SetEnvironmentVariable("WSKEY", $wsKey, "Machine")
+
     #set agent config schema version
     $schemaVersionFile = '/etc/config/settings/schema-version'
     if (Test-Path $schemaVersionFile) {
