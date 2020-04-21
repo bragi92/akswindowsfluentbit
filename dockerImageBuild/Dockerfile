@@ -40,7 +40,8 @@ RUN ./setup.ps1
 
 COPY ./scripts/powershell/main.ps1 /opt/omsagentwindows/scripts/powershell
 COPY ./scripts/powershell/filesystemwatcher.ps1 /opt/omsagentwindows/scripts/powershell
-COPY ./scripts/powershell/livenessprobe.ps1 /opt/omsagentwindows/scripts/powershell
+#COPY ./scripts/powershell/livenessprobe.ps1 /opt/omsagentwindows/scripts/powershell
+COPY ./scripts/cmd/livenessprobe.cmd /opt/omsagentwindows/scripts/cmd/
 COPY ./omsagentwindows/certgenerator/* /opt/omsagentwindows/certgenerator/
 
 # copy ruby scripts to /opt folder
